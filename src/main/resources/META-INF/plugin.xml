@@ -1,0 +1,48 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>top.geekcloud.dartpad</id>
+
+    <!-- Public plugin name should be written in Title Case.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
+    <name>Dartpad</name>
+
+    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+    <vendor email="827266641@qq.com" url="https://blog.geekcloud.top">LingYun</vendor>
+
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
+    <description>dartpad</description>
+
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationService serviceImplementation="top.geekcloud.dartpad.services.MyApplicationService"/>
+        <projectService serviceImplementation="top.geekcloud.dartpad.services.MyProjectService"/>
+        <notificationGroup id="DefGroup"
+                           displayType="BALLOON"
+                           key="defNotification"/>
+    </extensions>
+
+    <applicationListeners>
+        <listener class="top.geekcloud.dartpad.listeners.MyProjectManagerListener"
+                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
+        <listener class="top.geekcloud.dartpad.listeners.MyFileListener"
+                  topic="com.intellij.openapi.fileEditor.FileEditorManagerListener"/>
+    </applicationListeners>
+    <actions>
+        <action id="top.geekcloud.dartpad.actions.GenDartPadAction"
+                class="top.geekcloud.dartpad.actions.GenDartPadAction" text="GenDartPad" description="GenDartPad">
+            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+        </action>
+        <action id="top.geekcloud.dartpad.actions.SetGistsKeyAction"
+                class="top.geekcloud.dartpad.actions.SetGistsKeyAction" text="SetGistsKey" description="SetGistsKey">
+            <add-to-group group-id="Notifications" anchor="first"/>
+        </action>
+    </actions>
+</idea-plugin>
