@@ -37,8 +37,6 @@ class DartPadGenFailException(message: String? = null) : Exception(message) {}
 object GistsCreator {
     private const val personalKeyFileName = ".genDartPadKey.cfg"
 
-    // const val token = "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"
-
     var token: String? = getPersonKey()
 
     fun showTokenSetterDialog(project: Project?) {

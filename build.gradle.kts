@@ -1,3 +1,7 @@
+import java.io.File
+import java.io.FileInputStream
+import java.util.*
+
 plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "1.6.20"
@@ -19,6 +23,10 @@ intellij {
     plugins.set(listOf(/* Plugin Dependencies */))
 }
 
+val prop = Properties().apply {
+    load(FileInputStream(File(rootProject.rootDir, "local.properties")))
+}
+
 tasks {
     // Set the JVM compatibility versions
     withType<JavaCompile> {
@@ -34,14 +42,18 @@ tasks {
         untilBuild.set("222.*")
     }
 
+    @Suppress("LocalVariableName") val CERTIFICATE_CHAIN: String = File("chain.crt").readText()
+    @Suppress("LocalVariableName") val PRIVATE_KEY: String = File("private.pem").readText()
+
     signPlugin {
-        certificateChain.set(System.getenv("CERTIFICATE_CHAIN"))
-        privateKey.set(System.getenv("PRIVATE_KEY"))
-        password.set(System.getenv("PRIVATE_KEY_PASSWORD"))
+        certificateChain.set(CERTIFICATE_CHAIN)
+        privateKey.set(PRIVATE_KEY)
+        password.set(prop["private_pem_password"].toString())
     }
 
     publishPlugin {
-        token.set(System.getenv("PUBLISH_TOKEN"))
+        token.set(prop["ORG_GRADLE_PROJECT_intellijPublishToken"].toString())
+        channels.set(listOf("beta"))
     }
 }
 
